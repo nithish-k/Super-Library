@@ -1,0 +1,52 @@
+{% include "navigationbar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #login_form{
+            position: absolute;
+            background-color: rgb(228, 227, 227);
+            top: calc(50% - 130px);
+            left: calc(50% - 170px);
+            text-align: center;
+            padding: 50px;
+        }
+        .input_fields{
+            margin: 20px;
+            margin-bottom: -5px;
+            padding: 10px;
+            font-size: 16px;
+            display: inline-block;
+            border: 1.5px solid gray;
+            border-radius: 5px;
+        }
+        #login_button{
+            width: calc(100% - 40px);
+            background-color: #3ca9e2;
+            color: white;
+            border: none;
+        }
+        #login_button:hover{
+            background-color: #5cbcf0;
+        }
+        #login_label{
+            margin-bottom: -20px;
+            margin-top: -20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <form id="login_form" method="POST" action="/login/">
+        <p id="login_label">Login</p> <br>
+        {% csrf_token %}
+        <input class="input_fields" placeholder="Username" name="username"  type="text" id="username"><br>
+        <input class="input_fields" placeholder="Password" name="password"  type="password" id="password"><br>
+        <button id="login_button" class="input_fields" type="submit">Login</button>
+    </form>
+</body>
+</html>

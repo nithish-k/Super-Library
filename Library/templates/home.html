@@ -1,0 +1,198 @@
+{% include "navigationbar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            overflow-x: hidden;
+        }
+        .main{
+            display: block;
+            width: 100vw;
+        }
+        #lib_image{
+            width: 100%;
+            height: 50vh;
+            object-fit: cover;
+            position: absolute;
+        }
+        #dept{
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            position: absolute;
+            width: calc(100vw - 40px);
+            top: calc(25vh + 10px);
+            font-size: 30px;
+            letter-spacing: 0.5px;
+            font-style: italic;
+        }
+        .stats{
+            display: block;
+            position: absolute;
+            background-color: white;
+            height: auto;
+            width: 100vw;
+            top: calc(50vh + 75px);
+        }
+        .stats ul{
+            position: relative;
+            margin-top: 4px;
+            margin-left: 15px;
+        }
+        .stats ul li{
+            list-style-type: none;
+            margin: 12.5px;
+            float: left;
+        }
+        .stat_box{
+            border-radius: 3px;
+            padding: 10px;
+            width: 100px;
+            background-color: rgb(208, 243, 255);
+            border: 1px solid black;
+            text-align: center;
+        }
+        .stat_box *{
+            margin-bottom: 7.5px;
+        }
+        .stat_num{
+            font-size: 27.5px;
+        }
+        #arsenal{
+            margin-left: 20px;
+            font-size: 20px;
+            font-style: italic;
+            display: inline-block;
+            padding: 7.55px;
+        }
+        .table_book{
+            margin: 20px;
+            position: relative;
+            top: 37.5px;
+            left: calc(50% - 595px);
+        }
+        .rows1{
+            background-color: rgb(200, 248, 215);
+        }
+        .rows2{
+            background-color: rgb(181, 239, 217);
+        }
+        .heads{
+            background-color: whitesmoke;
+        }
+        .table_book td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+            width: 150px;
+        }
+        .table_book th{
+            border-bottom: 2px solid black;
+        }
+        #b_button{
+            position: relative;
+            float: right;
+            right: 100px;
+            margin-top: 12.5px;
+            text-decoration: none;
+            border: 1px solid transparent;
+            background-color: rgb(152, 253, 152);
+            padding: 5px;
+            border-radius: 5px;
+            color: black;
+        }
+        #b_button:hover{
+            border: 1px solid darkgreen;
+        }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <a href="/student_scan" id="b_button">Borrow/Return</a>
+    <table class="table_book">
+        <tr class="cols">
+            <th class="heads">S.no</th>
+            <th class="heads">Name</th>
+            <th class="heads">Author</th>
+            <th class="heads">Genre</th>
+            <th class="heads">Type</th>
+            <th class="heads">Quantity</th>
+            <th class="heads">Borrowers</th>
+        </tr>
+        {% for i in all_things %}
+            {% if forloop.counter|divisibleby:2 %}
+                <tr class="cols">
+                    <td class="rows1">{{forloop.counter}}</td>
+                    <td class="rows1">{{i.name}}</td>
+                    <td class="rows1">{{i.author}}</td>
+                    <td class="rows1">{{i.book_genre}}</td>
+                    <td class="rows1">{{i.publish_type}}</td>
+                    <td class="rows1">{{i.quantity}}</td>
+                    <td class="rows1">{{i.borrowers.count }}</td>
+                </tr>
+            {% else %}
+                <tr class="cols">
+                    <td class="rows2">{{forloop.counter}}</td>
+                    <td class="rows2">{{i.name}}</td>
+                    <td class="rows2">{{i.author}}</td>
+                    <td class="rows2">{{i.book_genre}}</td>
+                    <td class="rows2">{{i.publish_type}}</td>
+                    <td class="rows2">{{i.quantity}}</td>
+                    <td class="rows2">{{i.borrowers.count }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    {% else %}
+        <div class="main">
+            <img id="lib_image" src="/media/library_image.jpg" alt="">
+            <p id="dept">Department of Electronics and Communication.</p>
+        </div>
+        <div class="stats">
+            <p id="arsenal">Our Arsenal&nbsp;&nbsp;></p>
+            <ul>
+                <li>
+                    <div class="stat_box">
+                        <p class="stat_num">{{publishes_count}}</p>
+                        <p>Publishings</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="stat_box">
+                        <p class="stat_num">{{genres_count}}</p>
+                        <p>Genres</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="stat_box">
+                        <p class="stat_num">{{books_count}}</p>
+                        <p>Books</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="stat_box">
+                        <p class="stat_num">{{articles_count}}</p>
+                        <p>Articles</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="stat_box">
+                        <p class="stat_num">{{magazines_count}}</p>
+                        <p>Magazines</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="stat_box">
+                        <p class="stat_num">{{projects_count}}</p>
+                        <p>Projects</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+</body>
+</html>

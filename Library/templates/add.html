@@ -1,0 +1,143 @@
+{% include "navigationbar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            overflow-x: hidden;
+        }
+        #camera{
+            float: right;
+            margin-top: 20px;
+        }
+        #click_btn{
+            position: absolute;
+            border: none;
+            background-color: lightgreen;
+            height: 50px;
+            margin-right: 17.5px;
+            font-size: 18px;
+            right: 2.5px;
+            top: 445px;
+            width: 480px;
+        }
+        #click_btn:hover{
+            background-color: rgb(85, 209, 85);
+        }
+        #read_form{
+            width: 400px;
+            background-color: whitesmoke;
+            float: left;
+            position: absolute;
+            margin: 30px;
+            margin-left: 70px;
+            padding: 30px;
+            top: calc(50% - 200px);
+        }
+        #read_form *{
+            display: block;
+            margin: 10px;
+            height: 30px;
+            font-size: 18px;
+            border: 1px solid black;
+            padding-left: 10px;
+            border-radius: 0px;
+            width: 85%;
+            margin-top: 20px;
+        }
+        .message{
+            position: absolute;
+            left: calc(50% - 40px);
+            height: 30px;
+            background-color: lightgreen;
+            padding: 10px;
+            border-radius: 2px;
+            top: 70px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <div class="message" id="success_message">
+        Added successfully
+    </div>
+    <div class="message" id="fail_message">
+        Coudn't add
+    </div>
+    <div id="camera"></div>
+    <button id="click_btn" onclick="take_picture()">Scan</button>
+    <form action="/readcode/" method="POST" id="read_form">
+        {% csrf_token %}
+        <input type="text" placeholder="Name" name="book_name">
+        <input type="text" placeholder="Author" name="author_name">
+        <input type="number" id="edition" name="edition" step="1" placeholder="Edition">
+        <input type="number" id="quantity" name="quantity" step="1" placeholder="Quantity">
+        <select name="genres" id="genre_sel">
+            {% for i in genres %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}   
+        </select>
+        <select name="type" id="type">
+            <option value="Book">Book</option>
+            <option value="Article">Article</option>
+            <option value="Magazine">Magazine</option>
+            <option value="Project_files">Project</option>
+        </select>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <script>
+        Webcam.set({
+            width:520,
+            height:360,
+            image_format:'jpeg',
+            jpeg_quality:90,
+            flip_horiz: false,
+        })
+        Webcam.attach("#camera");
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        function take_picture(){
+            Webcam.snap(function(data_uri){
+                var link = document.createElement("a");
+                var fileName = "scanned_image"
+                document.body.appendChild(link);
+
+                link.setAttribute("href", data_uri);
+                link.setAttribute("download", fileName);
+                link.click();
+            })
+            sleep(200).then(() => {
+                document.getElementById("read_form").submit();
+            });
+        }
+        window.onload = (event) => {
+            if(window.location.pathname == "/add/success"){
+                console.log(window.location.pathname)
+                document.getElementById("success_message").style.display = "block";
+                sleep(2000).then(() => {
+                    document.getElementById("success_message").style.display = "none";
+                });
+            }
+            if(window.location.pathname == "/add/fail"){
+                console.log(window.location.pathname)
+                document.getElementById("fail_message").style.display = "block";
+                sleep(2000).then(() => {
+                    document.getElementById("fail_message").style.display = "none";
+                });
+            }
+        };
+    </script>
+    {% else %}
+    <script>
+        alert("please login to continue");
+        window.location = "/login";
+    </script>
+    {% endif %}
+</body>
+</html>

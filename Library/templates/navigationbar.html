@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .nav{
+            width: 100vw;
+            height: 60px;
+            display: block;
+            position: sticky;
+            position: -webkit-sticky;
+            top: 0px;
+            background-color: rgb(228, 227, 227);
+            text-align: center;
+            z-index: 9;
+        }
+        .nav ul{
+            position: relative;
+            left: -17.5px;
+        }
+        .nav ul li{
+            margin-top: 19.5px;
+            margin-right: 15px;
+            margin-left: 15px;
+            display: inline-block;
+        }
+        .nav ul li a{
+            color: black;
+            font-size: 16px;
+            text-decoration: none;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 5px;
+            border-bottom: 1.5px solid transparent;
+        }
+        .nav ul li a:hover{
+            border-bottom: 1.5px solid black;
+        }
+        .logos{
+            display: inline-block;
+            width: 55px;
+            height: 55px;
+        }
+        #logo1{
+            margin-top: 0px;
+            float: left;
+            padding-left: 10px;
+        }
+        #logo2{
+            margin-top: -40.5px;
+            float: right;  
+            padding-right: 10px;          
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <img class="logos" id="logo1" src="/media/logo.PNG" alt="Logo">
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="/collections">Collections</a>
+            </li>
+            <li>
+                <a href="/add">Add</a>
+            </li>
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="/logout">Logout</a>
+                {% else %}
+                    <a href="/login">Login</a>
+                {% endif %}
+            </li>
+        </ul>
+        <img class="logos" id="logo2" src="/media/logo.PNG" alt="Logo">
+    </div>
+</body>
+</html>

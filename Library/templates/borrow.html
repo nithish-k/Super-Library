@@ -1,0 +1,117 @@
+{% include "navigationbar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #camera{
+            float: right;
+            margin-top: 20px;
+        }
+        #click_btn{
+            position: absolute;
+            border: none;
+            background-color: rgb(238, 149, 144);
+            height: 50px;
+            margin-right: 17.5px;
+            font-size: 18px;
+            right: 2.5px;
+            top: 445px;
+            width: 480px;
+        }
+        #click_btn:hover{
+            background-color: rgb(209, 85, 85);
+        }
+        .student_details{
+            float: left;
+            position: relative;
+            background-color: whitesmoke;
+            padding: 10px;
+            width: 500px;
+            margin: 20px;
+        }
+        .student_details *{
+            display: inline-block;
+        }
+        .details{
+            font-size: 20px;
+            font-style: italic;
+            padding: 5px;
+            margin: 5px;
+        }
+        .book_table{
+            margin: 20px;
+        }
+        .book_table td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+            width: 150px;
+        }
+        .book_table th{
+            border-bottom: 2px solid black;
+        }
+        .heads{
+            background-color: lightgreen;
+        }
+        .cols{
+            background-color: rgb(181, 242, 233);
+        }
+    </style>
+</head>
+<body>
+    <a href="/add_book/{{borrower_roll}}" id="borrow_link"></a>
+    <div id="camera"></div>
+    <button id="click_btn" onclick="take_picture()">Scan book Bar-code</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <script>
+        Webcam.set({
+            width:520,
+            height:360,
+            image_format:'jpeg',
+            jpeg_quality:90,
+            flip_horiz: false,
+        })
+        Webcam.attach("#camera");
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        function take_picture(){
+            Webcam.snap(function(data_uri){
+                var link = document.createElement("a");
+                var fileName = "scanned_image"
+                document.body.appendChild(link);
+
+                link.setAttribute("href", data_uri);
+                link.setAttribute("download", fileName);
+                link.click();
+            })
+            sleep(200).then(() => {
+                document.getElementById("borrow_link").click();
+            });
+        }
+    </script>
+    <div class="student_details">
+        Roll-no: <p class="details" id="roll">{{borrower_roll}}</p><br>
+        Name: <p class="details" id="name">{{borrower_name}}</p><br>
+        Mobile: <p class="details" id="mobile">{{borrower_mobile}}</p><br>
+    </div>
+    <table class="book_table">
+        <tr>
+            <th class="heads">Name</th>
+            <th class="heads">Author</th>
+            <th class="heads">Type</th>
+        </tr>
+        {% for x in borrowed_books %}
+            <tr>
+                <td class="cols">{{x.name}}</td>
+                <td class="cols">{{x.author}}</td>
+                <td class="cols">{{x.publish_type}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
