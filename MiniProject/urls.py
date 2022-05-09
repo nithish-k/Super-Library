@@ -5,9 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('home/', admin.site.urls),
+    path('root/', admin.site.urls),
     path("", vh.home),
-    path("collections/", vh.collections),
     path("login/", vh.login),
     path("logout/", vh.logout), 
     path("add/", vh.add),
@@ -18,4 +17,5 @@ urlpatterns = [
     path("student_scanner/", vh.student_scanner),
     path("borrow/<str:roll>", vh.borrow),
     path("add_book/<str:b_roll>", vh.add_book),
+    path("publish_edit/<str:current_book>", vh.edit_publish),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

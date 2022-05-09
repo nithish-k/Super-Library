@@ -29,6 +29,7 @@ class Student(models.Model):
     name = models.TextField(default="")
     roll_no = models.CharField(default="", max_length=50)
     mobile_no = models.CharField(default="", max_length=12)
+    email = models.CharField(default="", max_length=50)
     def __str__(self):
         return str(self.name)
 

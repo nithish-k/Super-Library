@@ -93,6 +93,50 @@
         .table_book th{
             border-bottom: 2px solid black;
         }
+        .book_edit_form{
+            transition: 0.5s;
+            font-size: 13px;
+            background-color: whitesmoke;
+            width: 180px;
+            position: relative;
+            display: none;
+        }
+        .edit_button{
+            color: black;
+            font-style: italic;
+            text-decoration: underline;
+            border: none;
+            background-color: transparent;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .input_label{
+            margin-top: 5px;
+        }
+        .form_input{
+            margin-left: 2px;
+            width: calc(100% - 20px);
+            font-size: 16px;
+            margin-top: 5px;
+            padding-left: 5px;
+        }
+        .save_button{
+            display: none;
+            color: black;
+            font-style: italic;
+            border: none;
+            background-color: lightgreen;
+            padding: 5px;
+            margin-left: 70px;
+            margin-top: 5px;
+            font-size: 18px;
+            border-radius: 2.5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+        .book_edit_form *{
+            display: inline-block;
+        }
         #b_button{
             position: relative;
             float: right;
@@ -109,6 +153,18 @@
             border: 1px solid darkgreen;
         }
     </style>
+    <script>
+        function edit_dropdown(elem){
+            var edit_id = elem.id;
+            elem.style.display = "none";
+            form_id = "book_edit_" + edit_id.split("_")[1];
+            save_id = "save_" + edit_id.split("_")[1];
+            current_form = document.getElementById(form_id);
+            current_save = document.getElementById(save_id);
+            current_form.style.display = "block";
+            current_save.style.display = "block";
+        }
+    </script>
 </head>
 <body>
     {% if user.is_authenticated %}
@@ -133,6 +189,19 @@
                     <td class="rows1">{{i.publish_type}}</td>
                     <td class="rows1">{{i.quantity}}</td>
                     <td class="rows1">{{i.borrowers.count }}</td>
+                    <td>
+                        <form action="/publish_edit/{{i.id}}" method="POST" id="book_edit_{{forloop.counter}}" class="book_edit_form">
+                            {% csrf_token %}
+                            <label class="input_label" for="name_{{forloop.counter}}">Name:</label>
+                            <input class="form_input" name="publish_name" value="{{i.name}}" type="text" id="name_{{forloop.counter}}">
+                            <label class="input_label" for="author_{{forloop.counter}}">Author:</label><br>
+                            <input class="form_input" name="publish_author" value="{{i.author}}" type="text" id="author_{{forloop.counter}}">
+                            <label class="input_label" for="quantity_{{forloop.counter}}">Quantity:</label>
+                            <input class="form_input" name="publish_quantity" value="{{i.quantity}}" type="text" id="id_{{forloop.counter}}">
+                            <button type="submit" class="save_button" id="save_{{forloop.counter}}">Save</button>
+                        </form>
+                        <button onclick="edit_dropdown(this)" class="edit_button" id="edit_{{forloop.counter}}">Edit</button>
+                    </td>
                 </tr>
             {% else %}
                 <tr class="cols">
@@ -143,6 +212,19 @@
                     <td class="rows2">{{i.publish_type}}</td>
                     <td class="rows2">{{i.quantity}}</td>
                     <td class="rows2">{{i.borrowers.count }}</td>
+                    <td>
+                        <form action="/publish_edit/{{i.id}}" method="POST" id="book_edit_{{forloop.counter}}" class="book_edit_form">
+                            {% csrf_token %}
+                            <label class="input_label" for="name_{{forloop.counter}}">Name:</label>
+                            <input class="form_input" name="publish_name" value="{{i.name}}" type="text" id="name_{{forloop.counter}}">
+                            <label class="input_label" for="author_{{forloop.counter}}">Author:</label><br>
+                            <input class="form_input" name="publish_author" value="{{i.author}}" type="text" id="author_{{forloop.counter}}">
+                            <label class="input_label" for="quantity_{{forloop.counter}}">Quantity:</label>
+                            <input class="form_input" name="publish_quantity" value="{{i.quantity}}" type="text" id="id_{{forloop.counter}}">
+                            <button type="submit" class="save_button" id="save_{{forloop.counter}}">Save</button>
+                        </form>
+                        <button onclick="edit_dropdown(this)" class="edit_button" id="edit_{{forloop.counter}}">Edit</button>
+                    </td>
                 </tr>
             {% endif %}
         {% endfor %}

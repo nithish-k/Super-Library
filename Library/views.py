@@ -76,9 +76,6 @@ def logout(request):
     auth_logout(request)
     return HttpResponseRedirect("/")
 
-def collections(request):
-    return render(request, '/Work/MiniProject/Library/templates/collections.html')
-
 def add(request):
     params = {
         "genres": collection.objects.all(),
@@ -130,3 +127,14 @@ def student_scanner(request):
 
 def student_scan(request):
     return render(request, "/Work/MiniProject/Library/templates/student_scan.html")
+
+def edit_publish(request, current_book=""):
+    book_name = request.POST.get("publish_name")
+    book_author = request.POST.get("publish_author")
+    book_quantity = request.POST.get("publish_quantity")
+    book = Publish.objects.get(id = current_book)
+    book.name = book_name
+    book.author = book_author
+    book.quantity = book_quantity
+    book.save()
+    return HttpResponseRedirect("/")
